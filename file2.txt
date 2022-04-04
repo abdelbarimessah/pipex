@@ -1,0 +1,14 @@
+file1.txt
+file2.txt
+ft_utils.c
+ft_utils.o
+ft_utils2.c
+ft_utils2.o
+main.c
+main_bonus.c
+main_bonus.o
+makefile
+pipex.c
+pipex.h
+pipex.o
+pipex_bonus
