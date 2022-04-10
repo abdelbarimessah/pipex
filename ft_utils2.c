@@ -6,7 +6,7 @@
 /*   By: amessah <amessah@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 22:24:29 by amessah           #+#    #+#             */
-/*   Updated: 2022/04/03 23:44:30 by amessah          ###   ########.fr       */
+/*   Updated: 2022/04/10 00:22:56 by amessah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,28 @@ void	file_error(char *str)
 
 char	*join(char *str1, char *str2, char *str3)
 {
-	int i;
-	int j;
-	int len;
-	char *str;
+	int		i;
+	int		j;
+	int		len;
+	char	*str;
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3);	
+	len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3);
 	str = (char *)malloc(sizeof(char) * (len + 1));
-	if(!str)
+	if (!str)
 		return (NULL);
-	while(str1[i])
+	while (str1[i])
 		str[j++] = str1[i++];
 	i = 0;
-	while(str2[i])
+	while (str2[i])
 		str[j++] = str2[i++];
 	i = 0;
-	while(str3[i])
+	while (str3[i])
 		str[j++] = str3[i++];
 	str[j] = '\0';
 	return (str);
 }
-
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -68,29 +67,38 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (0);
 }
 
-int	get_next_line_pipex(char **line)
+size_t	ft_strlen(const char *str)
 {
-	int i;
-	int j;
-	int r;
-	char *buffer;
+	int	i;
 
 	i = 0;
-	r = 0;
-	buffer = (char *)malloc(10000);
-	if(!buffer)
+	if (!str)
 		return (0);
-	r = read(0, &j, 1);
-	while(r && j != '\n' && j != '\0')
+	while (str[i])
 	{
-		if(j != '\n' && j != '\0')
-			buffer[i] = j;
 		i++;
-		r = read(0, &j, 1);
 	}
-	buffer[i] = '\n';
-	buffer[++i] = '\0';
-	*line = buffer;
-	free(buffer);
-	return(r);
+	return (i);
+}
+
+char	*ft_strnstr(const char	*big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (little[i] == '\0')
+		return ((char *)big);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j] && i + j < len)
+		{
+			if (little[j + 1] == '\0')
+				return ((char *)big + i);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

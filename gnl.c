@@ -6,12 +6,11 @@
 /*   By: amessah <amessah@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 00:55:20 by amessah           #+#    #+#             */
-/*   Updated: 2022/04/04 01:00:30 by amessah          ###   ########.fr       */
+/*   Updated: 2022/04/10 00:23:40 by amessah          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -35,94 +34,44 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*get_buffer(int fd, char *str)
+int	get_next_line(char **line)
 {
 	char	*buffer;
 	int		i;
+	int		r;
+	char	c;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	i = 0;
+	r = 0;
+	buffer = (char *)malloc(10000);
 	if (!buffer)
-		return (NULL);
-	i = 1;
-	while (!ft_strchr(str, '\n') && i)
+		return (-1);
+	r = read(0, &c, 1);
+	while (r && c != '\n' && c != '\0')
 	{
-		i = read(fd, buffer, BUFFER_SIZE);
-		if (i == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		buffer[i] = '\0';
-		str = ft_strjoin(str, buffer);
+		if (c != '\n' && c != '\0')
+			buffer[i] = c;
+		i++;
+		r = read(0, &c, 1);
 	}
+	buffer[i] = '\n';
+	buffer[++i] = '\0';
+	*line = buffer;
 	free(buffer);
-	return (str);
+	return (r);
 }
 
-char	*get_line(char *s)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	*line;
-	int		i;
+	size_t	i;
 
 	i = 0;
-	if (!s[0])
-		return (NULL);
-	while (s[i] && s[i] != '\n')
-		i++;
-	line = (char *)malloc((i + 2) * sizeof(char));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (s[i] && s[i] != '\n')
+	if (n == 0)
+		return (0);
+	while ((unsigned char)s1[i] && (unsigned char)s2[i]
+		&& (unsigned char)s1[i] == (unsigned char)s2[i] && i < n - 1)
 	{
-		line[i] = s[i];
 		i++;
 	}
-	if (s[i] == '\n')
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
-}
-
-char	*rest(char *s)
-{
-	char	*nrest;
-	int		i;
-	int		j;
-	int		len;
-
-	i = 0;
-	j = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	if (!s[i])
-	{
-		free(s);
-		return (NULL);
-	}
-	len = ft_strlen(&s[i + 1]) + 1;
-	nrest = (char *)malloc(sizeof(char) * len);
-	if (!nrest)
-		return (NULL);
-	i++;
-	while (s[i])
-		nrest[j++] = s[i++];
-	nrest[j] = '\0';
-	free(s);
-	return (nrest);
-}
-
-char	*get_next_line(int fd)
-{	
-	static char	*getbuffer;
-	char		*line;
-
-	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (NULL);
-	getbuffer = get_buffer(fd, getbuffer);
-	if (!getbuffer)
-		return (NULL);
-	line = get_line(getbuffer);
-	getbuffer = rest(getbuffer);
-	return (line);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

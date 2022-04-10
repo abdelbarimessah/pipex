@@ -6,7 +6,7 @@
 #    By: amessah <amessah@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/17 21:13:54 by amessah           #+#    #+#              #
-#    Updated: 2022/04/04 00:59:25 by amessah          ###   ########.fr        #
+#    Updated: 2022/04/06 23:05:19 by amessah          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ src_bns =	main_bonus.c \
 			ft_utils.c	\
 			ft_utils2.c	\
 			gnl.c 		\
+			ft_strtrim.c \
 
 obj_bns = $(src_bns:.c=.o)
 
